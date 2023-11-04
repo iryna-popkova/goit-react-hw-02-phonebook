@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 
+import { ContactList } from './contactList';
+import { Filter } from './filter';
+import { ContactItem } from './contactItem';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -21,7 +25,7 @@ export class App extends Component {
         contact => contact.name.toLowerCase() === normName
       )
     ) {
-      return alert(`Sorry! ${name} is already in contacts! Please try again!`);
+      return alert(`${name} is already in contacts!`);
     }
 
     this.setState(prevState => ({
@@ -53,4 +57,34 @@ export class App extends Component {
       contact.name.toLowerCase().includes(normFilter)
     );
   };
+
+  render() {
+    const filteredContacts = this.getFilteredContacts();
+    const { addContact, filterContacts, resetFilters, removeContact, state } =
+      this;
+
+    return (
+      <Container>
+        <Title>Phonebook</Title>
+        <Section>
+          <SectionTitle>Add contact</SectionTitle>
+          <ContactForm onSubmit={addContact} />
+        </Section>
+        <Section>
+          <SectionTitle>Contacts</SectionTitle>
+          {state.contacts.length !== 0 ? (
+            <>
+              <Filter value={state.filter} onChange={filterContacts} />
+              <ContactList
+                contacts={filteredContacts}
+                onDeleteButton={deleteContact}
+              />
+            </>
+          ) : (
+            <Message message="There are no contacts in your phonebook. Please add your first contact!" />
+          )}
+        </Section>
+      </Container>
+    );
+  }
 }
