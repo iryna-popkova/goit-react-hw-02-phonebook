@@ -5,6 +5,8 @@ export const ContactItem = ({ id, name, number, onDelete }) => (
     <ContactData>
       {name}: {number}
     </ContactData>
-    <RemoveButton onClick={() => onDelete(id)}>Delete</RemoveButton>
+    <RemoveButton type="button" onClick={() => onDelete(id)}>
+      Delete
+    </RemoveButton>
   </ListItem>
 );

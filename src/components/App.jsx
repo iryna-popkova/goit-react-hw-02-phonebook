@@ -16,21 +16,24 @@ export class App extends Component {
     filter: '',
   };
 
-  addContact = ({ name, number }) => {
-    const contact = { id: nanoid(), name, number };
-    const normName = name.toLowerCase();
+  addContact = newContact => {
+    const { contacts } = this.state;
 
-    if (
-      this.state.contacts.find(
-        contact => contact.name.toLowerCase() === normName
-      )
-    ) {
-      return alert(`${name} is already in contacts!`);
+    if (contacts.some(contact => contact.name === newContact.name)) {
+      alert(`${newContact.name} already in phonebook!`);
+      return;
     }
 
-    this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
-    }));
+    const contact = {
+      ...newContact,
+      id: nanoid(),
+    };
+    this.setState(prevState => {
+      return {
+        contacts: [...prevState.contacts, contact],
+      };
+    });
+    alert(`${newContact.name} added to your contacts!`);
   };
 
   changeFilter = event => {
@@ -41,8 +44,10 @@ export class App extends Component {
     const { filter, contacts } = this.state;
     const normFilter = filter.toLowerCase();
 
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normFilter)
+    return contacts.filter(
+      contact =>
+        contact.name.toLowerCase().includes(normFilter) ||
+        contact.number.includes(filter)
     );
   };
 
@@ -53,6 +58,10 @@ export class App extends Component {
   };
 
   removeContact = contactId => {
+    const contactToRemove = this.state.contacts.find(
+      contact => contactId === contact.id
+    );
+    alert(`${contactToRemove.name} removed from your phone book`);
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
@@ -77,7 +86,7 @@ export class App extends Component {
               <Filter value={state.filter} onChange={changeFilter} />
               <ContactList
                 contacts={filteredContacts}
-                onDeleteButton={removeContact}
+                onDelete={removeContact}
                 onReset={resetFilters}
               />
             </>

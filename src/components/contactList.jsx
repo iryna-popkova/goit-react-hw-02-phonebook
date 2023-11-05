@@ -1,7 +1,7 @@
 import { List } from './contactList.styled';
 import { ContactItem } from './contactItem';
 
-export const ContactList = ({ contacts, onRemoveContact }) => {
+export const ContactList = ({ contacts, onDelete }) => {
   return (
     <List>
       {contacts.map(({ id, name, number }) => {
@@ -11,7 +11,7 @@ export const ContactList = ({ contacts, onRemoveContact }) => {
             id={id}
             name={name}
             number={number}
-            onClick={onRemoveContact}
+            onDelete={onDelete}
           />
         );
       })}
