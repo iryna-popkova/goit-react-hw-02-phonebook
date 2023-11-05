@@ -1,18 +1,10 @@
-import React from 'react';
 import { ListItem, ContactData, RemoveButton } from './contactItem.styled';
 
-export const ContactItem = ({ id, name, number, onClick }) => (
+export const ContactItem = ({ id, name, number, onDelete }) => (
   <ListItem>
     <ContactData>
       {name}: {number}
     </ContactData>
-    <RemoveButton
-      type="button"
-      onClick={() => {
-        onClick(id);
-      }}
-    >
-      Delete
-    </RemoveButton>
+    <RemoveButton onClick={() => onDelete(id)}>Delete</RemoveButton>
   </ListItem>
 );

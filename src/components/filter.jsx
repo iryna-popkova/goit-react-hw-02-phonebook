@@ -1,4 +1,3 @@
-import React from 'react';
 import { FilterLabel, FilterInput } from './filter.styled';
 
 export const Filter = ({ value, onChange }) => (

@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 import { ContactList } from './contactList';
 import { Filter } from './filter';
-import { ContactItem } from './contactItem';
+import { ContactForm } from './contactForm';
 
 export class App extends Component {
   state = {
@@ -33,20 +33,8 @@ export class App extends Component {
     }));
   };
 
-  removeContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
-  };
-
-  filterContacts = event => {
+  changeFilter = event => {
     this.setState({ filter: event.currentTarget.value });
-  };
-
-  resetFilters = () => {
-    this.setState({
-      filters: '',
-    });
   };
 
   getFilteredContacts = () => {
@@ -58,33 +46,50 @@ export class App extends Component {
     );
   };
 
+  resetFilters = () => {
+    this.setState({
+      filters: '',
+    });
+  };
+
+  removeContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const filteredContacts = this.getFilteredContacts();
-    const { addContact, filterContacts, resetFilters, removeContact, state } =
+    const { addContact, changeFilter, resetFilters, removeContact, state } =
       this;
 
     return (
-      <Container>
-        <Title>Phonebook</Title>
-        <Section>
-          <SectionTitle>Add contact</SectionTitle>
+      <div>
+        <h1>Phonebook</h1>
+        <div>
+          <h2>Add contact</h2>
           <ContactForm onSubmit={addContact} />
-        </Section>
-        <Section>
-          <SectionTitle>Contacts</SectionTitle>
+        </div>
+        <div>
+          <h2>Contacts</h2>
           {state.contacts.length !== 0 ? (
             <>
-              <Filter value={state.filter} onChange={filterContacts} />
+              <Filter value={state.filter} onChange={changeFilter} />
               <ContactList
                 contacts={filteredContacts}
-                onDeleteButton={deleteContact}
+                onDeleteButton={removeContact}
+                onReset={resetFilters}
               />
             </>
           ) : (
-            <Message message="There are no contacts in your phonebook. Please add your first contact!" />
+            <p>
+              {' '}
+              "There are no contacts in your phonebook. Please add your first
+              contact!"
+            </p>
           )}
-        </Section>
-      </Container>
+        </div>
+      </div>
     );
   }
 }
