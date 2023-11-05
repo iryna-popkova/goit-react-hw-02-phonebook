@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { ContactList } from './contactList';
 import { Filter } from './filter';
 import { ContactForm } from './contactForm';
+import { Container, Section, Title, SectionTitle, Message } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -73,14 +74,14 @@ export class App extends Component {
       this;
 
     return (
-      <div>
-        <h1>Phonebook</h1>
-        <div>
-          <h2>Add contact</h2>
+      <Container>
+        <Title>Phonebook</Title>
+        <Section>
+          <SectionTitle>Add contact</SectionTitle>
           <ContactForm onSubmit={addContact} />
-        </div>
-        <div>
-          <h2>Contacts</h2>
+        </Section>
+        <Section>
+          <SectionTitle>Contacts</SectionTitle>
           {state.contacts.length !== 0 ? (
             <>
               <Filter value={state.filter} onChange={changeFilter} />
@@ -91,14 +92,14 @@ export class App extends Component {
               />
             </>
           ) : (
-            <p>
+            <Message>
               {' '}
               "There are no contacts in your phonebook. Please add your first
               contact!"
-            </p>
+            </Message>
           )}
-        </div>
-      </div>
+        </Section>
+      </Container>
     );
   }
 }
