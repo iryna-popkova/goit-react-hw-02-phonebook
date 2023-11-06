@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import { ContactList } from './contactList';
-import { Filter } from './filter';
-import { ContactForm } from './contactForm';
+import { ContactList } from '../ContactList/contactList';
+import { Filter } from '../Filter/filter';
+import { ContactForm } from '../ContactForm/contactForm';
 import { Container, Section, Title, SectionTitle, Message } from './App.styled';
 
 export class App extends Component {
@@ -21,7 +22,7 @@ export class App extends Component {
     const { contacts } = this.state;
 
     if (contacts.some(contact => contact.name === newContact.name)) {
-      alert(`${newContact.name} already in phonebook!`);
+      Notify.failure(`${newContact.name} already in phonebook!`);
       return;
     }
 
@@ -34,7 +35,7 @@ export class App extends Component {
         contacts: [...prevState.contacts, contact],
       };
     });
-    alert(`${newContact.name} added to your contacts!`);
+    Notify.success(`${newContact.name} added to your contacts!`);
   };
 
   changeFilter = event => {
@@ -62,7 +63,7 @@ export class App extends Component {
     const contactToRemove = this.state.contacts.find(
       contact => contactId === contact.id
     );
-    alert(`${contactToRemove.name} removed from your phone book`);
+    Notify.success(`${contactToRemove.name} removed from your phone book`);
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
